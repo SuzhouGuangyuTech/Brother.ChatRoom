@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 总结：
+1. 插值表达式一般用在标签体中
+2. 指令语法：
+功能：用于解析标签（包括：标签属性、标签体内容、绑定事件....
+举例：v-bind:href="xxx" 或简写为 :href="xxx",xxx同样要写 js 表达式，比如 xxx.toUpperCase()
+:href='Date.now()'
+备注：Vue 中的指令都是以 v- 开头的。
+
+双向数据绑定：v-model
+双向绑定一般都应用在表单类元素（输入类元素）上，如：input、textarea、select 等
+v-model:value="xxx" 可以简写为 v-mode="xxxx" 因为 v-model 默认就是绑定 value 属性的
+
+JS 小技巧：
+document.querySelector('input').value 可以拿到输入框中的值
+document.querySelector('input').style.backgroundColor = 'red'
+
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03 数据绑定</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        单项数据绑定：<input type="text" :value="name"><br> 双项数据绑定：
+        <input type="text" v-model:value="name"> 双项数据绑定简写：
+        <input type="text" v-model="name">
+        <!-- 如下代码是错误的，因为 v-model 只能应用在表单类元素（输入类元素）上 -->
+        <!-- <h2 v-model:x="name">你好，{{name}}</h2> -->
+    </div>
+    <script>
+        Vue.config.productionTip = false;
+
+        // Configuration object
+        // The container in Vue is one -to -one relationship, and a container can only correspond to one Vue instance
+        new Vue({
+            //el is used to specify the page element range controlled by the current VUE instance, which is usually an ID selector.
+            el: '#root',
+            data: {
+                name: 'Albert',
+                school: {
+                    name: '-炎炎域',
+                    url: 'http://www.baidu.com',
+                }
+
+            },
+            methods: {
+                ChangeMsg() {
+                    this.msg = 'Hello Albert';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        .stopDiv {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="show">显示</button>
+        <button @click="hide">隐藏</button>
+        <button @click="showMessage">点我会弹出提示信息</button>
+        <button @click="showMessage2($event,66)">点我会弹出提示信息</button>
+        <!-- 阻止默认行为 -->
+        <a href="www.baiidu.com" @click.prevent="showMessage2($event,66)">点我会弹出提示信息</a>
+        <!-- 阻止事件冒泡  -->
+        <div class="stopDiv" @click="showMessage2($event,66)">
+            <button @click.stop="showMessage2($event,66)">点我会弹出提示信息</button>
+        </div>
+        <!-- 事件只触发一次 -->
+        <button @click.once="showMessage2($event,66)">点我会弹出提示信息</button>
+        <p v-show="isShow">显示隐藏</p>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'albertzhao',
+                isShow: false
+            },
+            // 所有被 Vue 实例管理的方法，都会被挂载到 Vue 实例的 $options.methods 属性上
+            // 就写成普通方法，不要用箭头函数
+            methods: {
+                show() {
+                    this.isShow = true
+                },
+                hide() {
+                    this.isShow = false
+                },
+                showMessage() {
+                    alert(this.msg)
+                },
+                showMessage2(event, number) {
+                    alert(this.msg + number + event.target.innerText)
+                },
+                // 如果用箭头函数定义，这里面的 this 指向的是 Winows 实例
+                //showMessage: () => {
+                //    alert(this.msg)
+                //}
+            },
+        })
+    </script>
+</body>
+
+</html>

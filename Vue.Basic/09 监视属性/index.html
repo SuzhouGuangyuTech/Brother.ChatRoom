@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h2>今天天气很{{info}}</h2>
+        <button @click="changeWeather">切换天气1</button>
+        <!-- click 里面可以写简单的表达式，不需要加 this.isHot 了 -->
+        <button @click="isHot = !isHot">切换天气2</button>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'albertzhao',
+                isHot: true
+            },
+            methods: {
+                changeWeather() {
+                    console.log(this.isHot)
+                    this.isHot = !this.isHot
+                }
+            },
+            computed: {
+                info() {
+                    return this.isHot ? '热' : '冷'
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
