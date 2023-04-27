@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        .basic {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ccc;
+        }
+        
+        .red {
+            color: red;
+        }
+        
+        .blue {
+            color: blue;
+        }
+        
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 不会直接干掉元素，会占用空间 -->
+        <h2 v-show="isShow">v-show</h2>
+        <!-- 会直接干掉元素，不会占用空间 -->
+        <h2 v-if="isShow">v-if</h2>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                isShow: true
+            },
+            methods: {}
+        })
+    </script>
+</body>
+
+</html>
