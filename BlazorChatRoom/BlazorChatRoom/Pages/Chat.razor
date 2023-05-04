@@ -1,0 +1,176 @@
+﻿@using BlazorChatRoom.Data
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.SignalR.Client;
+@using System.Threading; 
+@using BlazorChatRoom.Hubs;
+@using System.Security.Claims;
+@inject NavigationManager _nav; 
+@inject UserManager<IdentityUser> _userManager;
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+  
+@page "/Chat"
+
+@code {
+
+    private string newMessage;
+    private string distClient;
+    private HubConnection _hub;
+    private bool isActive;
+    private UserModel user = new UserModel()
+    {
+            UserID = new Guid()
+    };
+
+
+    private AuthenticationState authenticationState;
+    private ClaimsPrincipal userLogin => authenticationState.User;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
+    List<MessageModel> ChatItems = new List<MessageModel>();
+
+    private async Task AddMessage(string message, string to)
+    {
+        //Below line would add message to our list
+        //ChatItems.Add(new MessageModel { MessageBody = message });
+
+        MessageModel newMessageModel = new MessageModel { MessageBody = message };
+        newMessageModel.Sender = user.UserName;
+        newMessageModel.TimeStamp = DateTime.Now;
+        newMessageModel.MessageBody = newMessage;
+
+        if (_hub != null || isActive == false)
+        {
+            if (string.IsNullOrEmpty(to))
+            {
+                //Sending messages to the ChatHub
+                await _hub.SendAsync("SendMessage", newMessageModel);
+            }
+            else
+            {
+                // 私发消息
+                 await _hub.SendAsync("SendPrivateMsg", newMessageModel,to);
+            }
+
+            // 发送到 ChatHub 中清空输入框中的消息
+            newMessage = string.Empty;
+        }  
+    }
+
+    public async Task ConnectBefore()
+    {
+        MessageModel newMessageModel = new MessageModel { MessageBody = "上线了" };
+        // 登录名
+        newMessageModel.LoginName = userLogin.Identity.Name;
+        // 聊天室别名
+        newMessageModel.Sender = user.UserName;
+        newMessageModel.TimeStamp = DateTime.Now;
+
+        if (_hub != null || isActive == false)
+        {
+            await _hub.SendAsync("Online", newMessageModel);
+        }  
+    }
+
+    public async Task StartChatting()
+    {
+        try
+        {
+            _hub = new HubConnectionBuilder()
+            .WithUrl(_nav.BaseUri.TrimEnd('/') + ChatHub.HubPath)
+            .Build();
+            _hub.On<MessageModel>("ReceiveMessage", ReceiveMessage);
+            await _hub.StartAsync();
+            isActive = true;
+            await ConnectBefore();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+
+    private void ReceiveMessage(MessageModel message)
+    {
+        if (isActive)
+        {
+            ChatItems.Add(message);
+            StateHasChanged();
+        }
+    }
+
+    private async Task EnterPressDown(KeyboardEventArgs e)
+    {
+        if(e.Key == Enum.GetName(typeof(ConsoleKey),ConsoleKey.Enter))
+        {
+            await StartChatting();
+        }
+    }
+}
+
+<h3>Chat</h3>
+
+<div class="container p-2">
+    <div class="row">
+        <div class="col-8">
+            <input class="form-control" type="text" placeholder="Enter your username..." @bind="user.UserName"
+            @onkeydown="EnterPressDown"/>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-dark" type="button" id="startChatting" @onclick="() => StartChatting()">Start Chatting...</button>
+        </div>
+    </div>
+</div>
+
+@if (isActive)
+    {
+    <div class="container-lg">
+        <div class="row bg-dark">
+            <div class="col-2 p-2">
+                <div class="text-center">
+                    <img src="https://picsum.photos/id/237/75/75" class="rounded-circle border border-4 border-light" alt="Profile Picture" />
+                </div>
+            </div>
+            <div class="col p-4">
+                <span class="text text-lg text-light">@user.UserName</span>
+                <br />
+            </div>
+        </div>
+
+        <div class="container">
+        </div>
+    
+        <div class="row">
+        <div class="col h-25">
+            <div class="container-fluid">
+                @foreach (MessageModel item in ChatItems)
+            {
+                <div class="row">
+                    <div class="col m-4 p-4 bg-info rounded-pill">
+                        <span class="text-light">@item.Sender:</span>
+                        <span class="text-light">@item.MessageBody</span>
+                        <br />
+                        <span class="text-light small">@item.TimeStamp.ToString("dd/MM/yyyy hh:mm:ss")</span>
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col">
+            <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Enter your message here..." @bind="newMessage" aria-label="Enter your message here..." aria-describedby="button" />
+                    <input type="text" class="form-control" placeholder="Enter your want to somebody..." @bind="distClient" aria-label="Enter your want to somebody..." aria-describedby="button" />
+                    <button class="btn btn-dark" type="button" id="txtMessage" @onclick="() => AddMessage(newMessage,distClient)">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+
