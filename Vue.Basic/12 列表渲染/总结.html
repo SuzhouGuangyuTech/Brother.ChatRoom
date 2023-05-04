@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>学生信息</h1>
+        <button @click="addAge">年龄+1</button>
+        <button @click="addSexDefaultNan">添加性别属性，默认值：男</button>
+        <button>在列表首位添加一个朋友</button>
+        <button>修改第一个朋友的名字为：张三</button>
+        <button>添加一个爱好</button>
+        <button>修改第一个爱好为：开车</button>
+        <br/>
+        <h3>姓名:{{student.name}}</h3>
+        <h3>年龄:{{student.age}}</h3>
+        <h3 v-if="student.sex">性别：{{student.sex}}</h3>
+        <h3>爱好:</h3>
+        <ul>
+            <li v-for="(item,index) in student.hobby" :key="index">{{item}}</li>
+        </ul>
+        <h3>朋友:</h3>
+        <ul>
+            <li v-for="(item,index) in student.friends" :key="index">
+                姓名:{{item.name}} 年龄:{{item.age}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                student: {
+                    name: "tony",
+                    age: 18,
+                    hobby: ["basketball", "football", "swimming"],
+                    friends: [{
+                        name: "jack",
+                        age: 18
+                    }, {
+                        name: "tom",
+                        age: 19
+                    }, {
+                        name: "jerry",
+                        age: 20
+                    }]
+                }
+            },
+            methods: {
+                addAge() {
+                    this.student.age++;
+                },
+                addSexDefaultNan() {
+                    // 这边的 this 代表的就是 vm
+                    this.$set(this.student, 'sex', '男')
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

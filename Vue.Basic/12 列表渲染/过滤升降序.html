@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        .basic {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ccc;
+        }
+        
+        .red {
+            color: red;
+        }
+        
+        .blue {
+            color: blue;
+        }
+        
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" placeholder="请输入姓名" v-model="name">
+        <button @click="sortType = 0">升序</button>
+        <button @click="sortType = 1">降序</button>
+        <button @click="sortType = 2">原序</button>
+        <ul>
+            <!-- 在 vue 和 react 中只要是列表渲染，就必须要有 key -->
+            <li v-for="(p,index) in filterPersonsComputed" :key="p.id">
+                姓名{{p.name}}-年龄{{p.age}}
+                <input type="text">
+            </li>
+        </ul>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                name: '',
+                sortType: 2,
+                persons: [{
+                    id: 1,
+                    name: '马冬梅',
+                    age: 30
+                }, {
+                    id: 2,
+                    name: '周继伦',
+                    age: 31
+                }, {
+                    id: 3,
+                    name: '周冬雨',
+                    age: 20
+                }, {
+                    id: 4,
+                    name: '温兆伦',
+                    age: 21
+                }],
+                sortPersons: []
+            },
+            methods: {
+
+            },
+            computed: {
+                // 引入升降序原序逻辑
+                filterPersonsComputed() {
+                    sortPersons = this.persons.filter(item => {
+                        return item.name.includes(this.name)
+                    });
+                    switch (this.sortType) {
+                        case 0:
+                            sortPersons.sort((a, b) => {
+                                return a.age - b.age
+                            })
+                            break;
+                        case 1:
+                            sortPersons.sort((a, b) => {
+                                return b.age - a.age
+                            })
+                            break;
+                        default:
+                            break;
+                    }
+                    return sortPersons
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

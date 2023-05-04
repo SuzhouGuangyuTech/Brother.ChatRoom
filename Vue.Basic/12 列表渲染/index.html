@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        .basic {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ccc;
+        }
+        
+        .red {
+            color: red;
+        }
+        
+        .blue {
+            color: blue;
+        }
+        
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <!-- 在 vue 和 react 中只要是列表渲染，就必须要有 key -->
+            <li v-for="(p,index) in persons" :key="index">
+                姓名{{p.name}}-年龄{{p.age}}
+            </li>
+        </ul>
+        <ul>
+            <!-- 遍历对象,键值对-->
+            <li v-for="(value,k) in car" :key="k">
+                {{index}}-{{value}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                persons: [{
+                    id: 1,
+                    name: 'albert',
+                    age: 18
+                }, {
+                    id: 2,
+                    name: 'alan',
+                    age: 18
+                }, {
+                    id: 3,
+                    name: 'tim',
+                    age: 18
+                }, {
+                    id: 4,
+                    name: 'lucy',
+                    age: 18
+                }],
+                car: {
+                    brand: 'BMW',
+                    price: 1000000
+                }
+            },
+            methods: {}
+        })
+    </script>
+</body>
+
+</html>

@@ -30,25 +30,36 @@
 
 <body>
     <div id="app">
-        <!-- 不会直接干掉元素，会占用空间 -->
-        <h2 v-show="isShow">v-show</h2>
-        <!-- 会直接干掉元素，不会占用空间 -->
-        <h2 v-if="isShow">v-if</h2>
-        <h2>当前的n值是:{{n}}</h2>
-        <div v-show="n >= 1">Angular</div>
-        <div v-show="n >= 2">React</div>
-        <div v-show="n >= 3">Vue</div>
-        <button @click="n++">点我n++</button>
+        <ul>
+            <!-- 在 vue 和 react 中只要是列表渲染，就必须要有 key -->
+            <li v-for="(p,index) in persons" :key="p.id">
+                姓名{{p.name}}-年龄{{p.age}}
+            </li>
+        </ul>
     </div>
     <script>
         let vm = new Vue({
             el: '#app',
             data: {
-                isShow: true,
-                n: 1
-            },
-            methods: {}
-        })
+                persons: [{
+                    id: 1,
+                    name: '马冬梅',
+                    age: 30
+                }, {
+                    id: 2,
+                    name: '周继伦',
+                    age: 31
+                }, {
+                    id: 3,
+                    name: '周冬雨',
+                    age: 20
+                }, {
+                    id: 4,
+                    name: '温兆伦',
+                    age: 21
+                }]
+            }
+        });
     </script>
 </body>
 
