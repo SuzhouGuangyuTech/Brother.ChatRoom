@@ -18,7 +18,7 @@ export default {
       // 属性的优先级更高，会将 studentAge 附加在 this(vc)身上，这时候 Age 就可以拿到 this.studentAge
       student: {
         name: "张三",
-        address: "Suzhou",
+        address: "fadfasf",
         age: 10,
       },
     };

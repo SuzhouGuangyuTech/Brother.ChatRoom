@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h2>自定义事件--{{ schoolValue.name }}</h2>
+    <h2>自定义事件</h2>
     第一种写法 @定义事件名="回调函数" 回调函数可以写成 getSchoolInfo(firstValue,...params)
     这边的 params 会自动变为数组，可以通过解构赋值的方式拿到
     <SchoolInfo @getSchoolEvent="getSchoolInfo" />
@@ -12,9 +12,6 @@
     <hr />
     第三种写法 在父组件写一个方法 showHomeInfo(homeValue) 通过属性绑定的方式传递给 HomeInfo props:['showHomeInfo'],子组件调用这个方法就可以将值传递回来。
     <HomeInfo :showHomeInfo="showHomeInfo" />
-    <hr />
-    使用原生事件，在原生修饰符上添加 native
-    <StudentInfo @click.native="showNativeAlert" />
   </div>
 </template>
 
@@ -34,28 +31,20 @@ export default {
   data() {
     return {
       msg: "welcome to vue",
-      schoolValue: {},
     };
   },
   methods: {
     getSchoolInfo(schoolValue) {
-      this.schoolValue = schoolValue;
       console.log(JSON.stringify(schoolValue));
     },
     showHomeInfo(homeValue) {
       console.log(JSON.stringify(homeValue));
-    },
-    showNativeAlert() {
-      alert(123);
     },
   },
   // 在挂载的时候挂接事件
   mounted() {
     // 2. 通过 this.$refs.组件名.$on('事件名', 回调函数) 监听事件
     this.$refs.studentInfoVc.$on("getStudentEvent", (value) => {
-      // 如果这块写成完成函数，this 指的是 StudentInfo Vc
-      // 如果写成箭头函数则会向上查找，查找到的是 App Vc
-      console.log(this);
       console.log(JSON.stringify(value));
     });
   },
