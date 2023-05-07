@@ -1,7 +1,10 @@
 <template>
   <div>
-    <h2>学生名称:{{ Name }}</h2>
-    <h2>学校年龄:{{ studentAge }}</h2>
+    <h1>学生信息</h1>
+    <h2>学生名称:{{ student.name }}</h2>
+    <h2>学生地址:{{ student.address }}</h2>
+    <h2>学生年龄:{{ student.age }}</h2>
+    <button @click="getStudentInfo">获取学生信息</button>
   </div>
 </template>
 
@@ -13,9 +16,18 @@ export default {
   data() {
     return {
       // 属性的优先级更高，会将 studentAge 附加在 this(vc)身上，这时候 Age 就可以拿到 this.studentAge
-      Name: "张三",
-      studentAge: 19,
+      student: {
+        name: "张三",
+        address: "fadfasf",
+        age: 10,
+      },
     };
+  },
+  methods: {
+    getStudentInfo() {
+      console.log("getStudentInfo");
+      this.$emit("getStudentEvent", this.student);
+    },
   },
 };
 </script>

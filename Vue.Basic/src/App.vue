@@ -1,23 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <h1 v-text="msg" ref="showTitle"></h1>
-    <button @click="showDom">点我输出上方的 DOM 元素</button>
-    <SchoolInfo />
+    <h2>自定义事件</h2>
+    第一种写法 @定义事件名="回调函数" 回调函数可以写成 getSchoolInfo(firstValue,...params)
+    这边的 params 会自动变为数组，可以通过解构赋值的方式拿到
+    <SchoolInfo @getSchoolEvent="getSchoolInfo" />
     <hr />
-    <StudentInfo />
+    第二种写法 ref="组件标识"，在挂载的时候挂接事件 this.refs.组件标识.$on/once('事件名', 回调函数),
+    这边的回调函数如果写在 methos 中，需要使用 this.回调函数。
+    <StudentInfo ref="studentInfoVc" />
+    以上这两种写法，子组件都有一个 @click 事件，调用点击方法，在点击方法中，通过 this.$emit('事件名', 参数) 触发事件
+    <hr />
+    第三种写法 在父组件写一个方法 showHomeInfo(homeValue) 通过属性绑定的方式传递给 HomeInfo props:['showHomeInfo'],子组件调用这个方法就可以将值传递回来。
+    <HomeInfo :showHomeInfo="showHomeInfo" />
   </div>
 </template>
 
 <script>
-import StudentInfo from "./components/StudentInfo";
 import SchoolInfo from "./components/SchoolInfo";
+import StudentInfo from "./components/StudentInfo";
+import HomeInfo from "./components/HomeInfo";
 
 export default {
   name: "App",
   components: {
-    StudentInfo,
     SchoolInfo,
+    StudentInfo,
+    HomeInfo,
   },
   // 必须要写成函数式的，返回不同实例
   data() {
@@ -26,9 +34,19 @@ export default {
     };
   },
   methods: {
-    showDom() {
-      console.log(this.$refs.showTitle);
+    getSchoolInfo(schoolValue) {
+      console.log(JSON.stringify(schoolValue));
     },
+    showHomeInfo(homeValue) {
+      console.log(JSON.stringify(homeValue));
+    },
+  },
+  // 在挂载的时候挂接事件
+  mounted() {
+    // 2. 通过 this.$refs.组件名.$on('事件名', 回调函数) 监听事件
+    this.$refs.studentInfoVc.$on("getStudentEvent", (value) => {
+      console.log(JSON.stringify(value));
+    });
   },
 };
 </script>
