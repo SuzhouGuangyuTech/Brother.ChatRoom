@@ -39,7 +39,6 @@ export default {
     // 用 on 承载起数据
     this.$bus.$on("checkTodoEvent", this.checkTodo);
     this.$bus.$on("deleteTodoEvent", this.deleteTodo);
-    this.$bus.$on("editTodoEvent", this.editTodo);
   },
   methods: {
     //添加一个todo
@@ -55,16 +54,6 @@ export default {
     //删除一个todo
     deleteTodo(id) {
       this.todos = this.todos.filter((todo) => todo.id !== id);
-    },
-    editTodo(id, title) {
-      // 遍历todos，找到对应的id，将其content改为content，要避免编辑把所有内容都删除的bug
-      console.log(id, title);
-      this.todos.forEach((todo) => {
-        if (todo.id === id) todo.title = title;
-      });
-      // this.todos = this.todos.forEach((todo) => {
-      //   if (todo.id === id) todo.title = title;
-      // });
     },
     //全选or取消全选
     checkAllTodo(done) {
@@ -104,11 +93,6 @@ body {
 .btn-danger {
   color: #fff;
   background-color: #da4f49;
-  border: 1px solid #bd362f;
-}
-.btn-edit {
-  color: #fff;
-  background-color: #49da79;
   border: 1px solid #bd362f;
 }
 .btn-danger:hover {
