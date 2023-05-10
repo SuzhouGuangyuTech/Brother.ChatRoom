@@ -10,8 +10,6 @@ import App from './App.vue'
 import plugins from './plugin'
 // 引入插件 vue-resource
 import vueResource from 'vue-resource'
-// 引入 vuex 脚本
-import store from './store'
 
 // 关闭 Vue 的生产提示
 Vue.config.productionTip = false;
@@ -35,7 +33,6 @@ new Vue({
     // 将 App 组件放入容器中，在原先写的是 components: { App }
     render: h => h(App),
     // 这个也可以写成 el: "#app"
-    store,
     beforeCreate() {
         Vue.prototype.$bus = this // 安装全局事件总线
     }

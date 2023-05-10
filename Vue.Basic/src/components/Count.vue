@@ -2,7 +2,7 @@
   功能：功能描述
   作者：albertzhao
   邮箱：szdxzhy@outlook.com
-  时间：2023年05月09日 17:15:01
+  时间：2023年05月10日 16:15:33
   版本：v1.0
   修改记录：
   修改内容：
@@ -11,22 +11,23 @@
 -->
 <template>
   <div>
-    <section class="jumbotron">
-      <h3 class="jumbotron-heading">Search Github Users</h3>
-      <div>
-        <input type="text" placeholder="enter the name you search" v-model="userName" />&nbsp;
-        <button @click="searchGithubUser">Search</button>
-      </div>
-    </section>
+    <h2>当前求和为：{{ n }}</h2>
+    <select v-model.number="n">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+    <button @click="incrementOdd">当前求和为奇数再加</button>
+    <button @click="incrementWait">等一等再加</button>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   // 组件名称
-  name: "Search",
+  name: "Count",
   // 组件参数 接收来自父组件的数据
   props: {},
   // 局部注册的组件
@@ -34,7 +35,7 @@ export default {
   // 组件状态值
   data() {
     return {
-      userName: "",
+      n: 1, // 用户选择的数据
     };
   },
   // 计算属性
@@ -43,39 +44,22 @@ export default {
   watch: {},
   // 组件方法
   methods: {
-    searchGithubUser() {
-      console.log(this.userName);
-      // 请求前 this.$bus.$on("searchUserEvent", (userList, isLoading, errMsg)
-      // 这边对象的顺序无所谓，那边用 es6 会进行比对
-      this.$bus.$emit("searchUserEvent", {
-        userList: [],
-        isFirst: false,
-        isLoading: true,
-        errMsg: "",
-      });
-      // 发送请求 axios
-      axios.get("https://api.github.com/search/users?q=" + this.userName).then(
-        (res) => {
-          console.log(res.data.items);
-          // 将数据传递给父组件
-          this.$bus.$emit("searchUserEvent", {
-            userList: res.data.items,
-            isFirst: false,
-            isLoading: false,
-            errMsg: "",
-          });
-        },
-        (err) => {
-          console.log(err.message);
-          // 将数据传递给父组件
-          this.$bus.$emit("searchUserEvent", {
-            userList: [],
-            isFirst: false,
-            isLoading: false,
-            errMsg: err.message,
-          });
-        }
-      );
+    increment() {
+      //   this.sum += this.n;
+      this.$store.dispatch("increment", this.n);
+    },
+    decrement() {
+      //   this.sum -= this.n;
+    },
+    incrementOdd() {
+      //   if (this.sum % 2) {
+      //     this.sum += this.n;
+      //   }
+    },
+    incrementWait() {
+      setTimeout(() => {
+        // this.sum += this.n;
+      }, 500);
     },
   },
   // 以下是生命周期钩子   注：没用到的钩子请自行删除
@@ -131,4 +115,7 @@ export default {
 <!--然而子组件的根节点元素会同时被设置了scoped的父css样式和设置了scoped的子css样式影响，-->
 <!--这么设计的目的是父组件可以对子组件根元素进行布局。-->
 <style scoped>
+button {
+  margin-left: 5px;
+}
 </style>
