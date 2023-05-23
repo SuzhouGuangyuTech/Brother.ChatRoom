@@ -124,7 +124,6 @@ export default {
           color: "#5ab1ef",
         },
       ],
-      orderData: [],
     };
   },
   // 计算属性
@@ -154,55 +153,43 @@ export default {
     getData().then((data) => {
       const { tableData, orderData } = data.data.data;
       this.tableData = tableData;
-      this.orderData = orderData;
+      var seriesData = [];
 
-      // this.orderData.data.forEach(function (item) {
-      //   console.log(item[key]);
-      //   data2.push(item[key]);
-      // });
-
-      //取出 this.orderData.data 中的 value 值
-      // Object.keys(this.orderData.data[0]).map(return key)
-      var testArr = Object.keys(this.orderData.data[0]).map((obj) => {
-        return obj.key;
+      Object.keys(orderData.data[0]).forEach((key) => {
+        seriesData.push({
+          name: key,
+          data: orderData.data.map((item) => item[key]),
+          type: "line",
+        });
       });
-      console.log(testArr);
-    });
 
-    // 挂载 echarts 图标
-    var lineEchart = echarts.init(this.$refs.echart1);
-    lineEchart.setOption({
-      title: {
-        text: "销量",
-      },
-      // 提示框组件
-      tooptip: {},
-      // 图例
-      legend: {
-        data: Object.keys(this.orderData.data[0]),
-      },
-      // x轴
-      xAxis: {
-        data: Object.keys(this.orderData.data[0]),
-      },
-      // y轴
-      yAxis: {},
-      // 数据
-      series: [
-        {
-          name: "销量",
-          type: "bar",
-          data: Object.keys(this.orderData.data[0]).map(function (key) {
-            return {
-              name: key,
-              data: this.orderData.data.reduce(function (data, item) {
-                data.push(item[key]);
-                return data;
-              }, []),
-            };
-          }),
+      var option = {
+        title: {
+          text: "销量",
         },
-      ],
+        // 提示框组件
+        tooptip: {},
+        // 图例
+        legend: {
+          data: Object.keys(orderData.data[0]),
+        },
+        // x轴
+        xAxis: {
+          data: Object.keys(orderData.data[0]),
+        },
+        // y轴
+        yAxis: {
+          type: "value",
+        },
+        // 数据
+        series: seriesData,
+      };
+
+      // 挂载 echarts 图标
+      var lineEchart = echarts.init(this.$refs.echart1);
+      lineEchart.setOption(option);
+      console.log("@@@@", orderData.data[0]);
+      console.log("@@@@", seriesData);
     });
   },
   /**
@@ -290,7 +277,7 @@ export default {
   justify-content: space-between;
   margin-left: 10px;
   .el-card {
-    width: 32%;
+    width: 30%;
     margin-bottom: 20px;
     padding-left: 8px;
     .count-info {
