@@ -14,7 +14,10 @@
     <div class="l-content">
       <el-button @click="changeCollapse" icon="el-icon-menu" size="mini"></el-button>
       <!-- 面包屑 -->
-      <span class="text">首页</span>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item v-for="item in tabList" :key="item.path" :to="{ path: item.path }">{{item.label}}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="r-content">
       <el-dropdown>
@@ -32,6 +35,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   // 组件名称
   name: "CommonHeader",
@@ -44,13 +49,15 @@ export default {
     return {};
   },
   // 计算属性
-  computed: {},
+  computed: {
+    ...mapState("tab", ["isCollapse", "tabList"]),
+  },
   // 侦听器
   watch: {},
   // 组件方法
   methods: {
     changeCollapse() {
-      this.$store.commit("changeCollapse");
+      this.$store.commit("tab/changeCollapse");
     },
   },
   // 以下是生命周期钩子   注：没用到的钩子请自行删除
@@ -70,7 +77,9 @@ export default {
    * el 被新创建的 vm.$ el 替换，并挂载到实例上去之后调用该钩子。
    * 如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$ el 也在文档内。
    */
-  mounted() {},
+  mounted() {
+    console.log(this.tabList);
+  },
   /**
    * 数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。
    * 你可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程。
@@ -120,6 +129,27 @@ export default {
     color: white;
     font-size: 14px;
     margin-left: 10px;
+  }
+  .l-content {
+    display: flex;
+    align-items: center;
+    .el-button {
+      margin-right: 10px;
+    }
+    // 一般情况下，组件库为了避免组件之间的样式冲突，会将组件内部的元素作用域限定在组件内部，因此只有组件内部的样式才能影响到组件内部的元素。如果我们需要修改子组件内部的某个元素，就需要使用 CSS 样式穿透。样式穿透可以通过运用 >>> 或 /deep/ 操作符来实现。
+    /deep/.el-breadcrumb__item {
+      .el-breadcrumb__inner {
+        font-weight: normal;
+        &.is-link {
+          color: #666;
+        }
+      }
+      &:last-child {
+        .el-breadcrumb__inner {
+          color: #409eff;
+        }
+      }
+    }
   }
   .r-content {
     img {

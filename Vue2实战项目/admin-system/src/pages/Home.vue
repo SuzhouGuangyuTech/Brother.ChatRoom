@@ -56,15 +56,21 @@
         <!-- 曲线图 -->
         <div class="line">
           <el-card class="box-card" style="height:280px">
-            <div ref="echart1" style="height:280px"></div>
+            <div ref="lineEchart" style="height:280px"></div>
           </el-card>
         </div>
 
-        <!-- 折线图 -->
         <div class="graph line">
-          <el-card style="height:260px">fdsfad</el-card>
-          <el-card style="height:260px">fafda</el-card>
+          <el-card style="height:260px">
+            <!-- 柱状图 -->
+            <div ref="barEchart" style="height:260px"></div>
+          </el-card>
+          <el-card style="height:260px">
+            <!-- 饼状图 -->
+            <div ref="pieEchart" style="height:260px"></div>
+          </el-card>
         </div>
+
       </el-col>
     </el-row>
   </div>
@@ -151,7 +157,7 @@ export default {
    */
   mounted() {
     getData().then((data) => {
-      const { tableData, orderData } = data.data.data;
+      const { tableData, orderData, userData, videoData } = data.data.data;
       this.tableData = tableData;
       var seriesData = [];
 
@@ -185,11 +191,66 @@ export default {
         series: seriesData,
       };
 
-      // 挂载 echarts 图标
-      var lineEchart = echarts.init(this.$refs.echart1);
+      // 折线图
+      var lineEchart = echarts.init(this.$refs.lineEchart);
       lineEchart.setOption(option);
-      console.log("@@@@", orderData.data[0]);
-      console.log("@@@@", seriesData);
+
+      // 柱状图
+      var barEchart = echarts.init(this.$refs.barEchart);
+      // 定义数据源如下
+      var sourceData = [
+        ["日期", ...userData.map((item) => item.date)],
+        ["新用户", ...userData.map((item) => item.new)],
+        ["活跃用户", ...userData.map((item) => item.active)],
+      ];
+      var barOption = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+          source: sourceData,
+        },
+        xAxis: { type: "category" },
+        yAxis: {},
+        // Declare several bar series, each will be mapped
+        // to a column of dataset.source by default.
+        series: [
+          { type: "bar", seriesLayoutBy: "row" },
+          { type: "bar", seriesLayoutBy: "row" },
+        ],
+      };
+      barEchart.setOption(barOption);
+
+      // 饼状图
+      // 柱状图
+      var pieEchart = echarts.init(this.$refs.pieEchart);
+      var pieOption = {
+        legend: {
+          top: "bottom",
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            restore: { show: true },
+            saveAsImage: { show: true },
+          },
+        },
+        series: [
+          {
+            name: "Nightingale Chart",
+            type: "pie",
+            radius: [50, 70],
+            center: ["50%", "50%"],
+            roseType: "area",
+            itemStyle: {
+              borderRadius: 8,
+            },
+            data: videoData,
+          },
+        ],
+      };
+      pieEchart.setOption(pieOption);
     });
   },
   /**

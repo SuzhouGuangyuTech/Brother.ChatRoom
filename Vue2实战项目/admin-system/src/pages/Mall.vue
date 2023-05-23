@@ -11,7 +11,7 @@
 -->
 <template>
   <div>
-    <h1>Mall</h1>
+    <h1 style="color:black">Mall</h1>
   </div>
 </template>
 

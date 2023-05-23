@@ -1,13 +1,34 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <el-container>
+      <!-- 让折叠的时候侧边栏自动适应宽度 -->
+      <el-aside width="auto">
+        <CommonAside />
+      </el-aside>
+      <el-container>
+        <el-header>
+          <CommonHeader />
+        </el-header>
+        <el-main>
+          <div>
+            <CommonTag />
+            <h1 style="color:black">==============</h1>
+          </div>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
+import CommonAside from "@/components/CommonAside.vue";
+import CommonHeader from "@/components/CommonHeader.vue";
+import CommonTag from "@/components/CommonTag.vue";
+
 export default {
   name: "App",
-  components: {},
+  components: { CommonAside, CommonHeader, CommonTag },
 };
 </script>
 

@@ -1,9 +1,8 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <!--
   功能：功能描述
   作者：albertzhao
   邮箱：szdxzhy@outlook.com
-  时间：2023年05月20日 10:49:55
+  时间：2023年05月23日 17:08:57
   版本：v1.0
   修改记录：
   修改内容：
@@ -11,43 +10,32 @@
   修改时间：
 -->
 <template>
-  <div>
-    <el-container>
-      <!-- 让折叠的时候侧边栏自动适应宽度 -->
-      <el-aside width="auto">
-        <CommonAside />
-      </el-aside>
-      <el-container>
-        <el-header>
-          <CommonHeader />
-        </el-header>
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
-    </el-container>
-
+  <div class="tabs">
+    <h1 style="color:black">dfafadf</h1>
+    <el-tag v-for="tag in tabList" :key="tag.path" :closable="item.name != 'home'" :effect="$route.name === item.name?'dark':'plain'">
+      {{tag.label}}
+    </el-tag>
   </div>
 </template>
 
 <script>
-import CommonAside from "@/components/CommonAside.vue";
-import CommonHeader from "@/components/CommonHeader.vue";
+import { mapState } from "vuex";
 
 export default {
   // 组件名称
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: "Main",
+  name: "CommonTag",
   // 组件参数 接收来自父组件的数据
   props: {},
   // 局部注册的组件
-  components: { CommonAside, CommonHeader },
+  components: {},
   // 组件状态值
   data() {
     return {};
   },
   // 计算属性
-  computed: {},
+  computed: {
+    ...mapState("tab", ["isCollapse", "tabList"]),
+  },
   // 侦听器
   watch: {},
   // 组件方法
@@ -105,8 +93,4 @@ export default {
 <!--然而子组件的根节点元素会同时被设置了scoped的父css样式和设置了scoped的子css样式影响，-->
 <!--这么设计的目的是父组件可以对子组件根元素进行布局。-->
 <style scoped>
-/* 去除 header 左侧 padding 边距 */
-.el-header {
-  padding: 0;
-}
 </style>

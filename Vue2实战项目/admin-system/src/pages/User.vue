@@ -11,7 +11,8 @@
 -->
 <template>
   <div>
-    <h1>User</h1>
+    <h1 style="color:black">User</h1>
+    <h1 style="color:black">Usefdafasdfasfdr</h1>
   </div>
 </template>
 

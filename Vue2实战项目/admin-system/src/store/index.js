@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex' // 引入Vuex
-import tab from './tab'
+import tab from './tab.js'
 
 Vue.use(Vuex) // 应用Vuex插件
 

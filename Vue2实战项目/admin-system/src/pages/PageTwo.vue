@@ -11,7 +11,7 @@
 -->
 <template>
   <div>
-    <h1>PageTwo</h1>
+    <h1 style="color:black">PageTwo</h1>
   </div>
 </template>
 
