@@ -11,8 +11,7 @@
 -->
 <template>
   <div class="tabs">
-    <h1 style="color:black">dfafadf</h1>
-    <el-tag v-for="tag in tabList" :key="tag.path" :closable="item.name != 'home'" :effect="$route.name === item.name?'dark':'plain'">
+    <el-tag @click="clickTabs(tag)" @close="closeTabs(tag,index)" v-for="(tag,index) in tabList" :key="tag.name" closable style="margin:5px" :effect="$route.name===tag.name?'dark':'plain'">
       {{tag.label}}
     </el-tag>
   </div>
@@ -35,11 +34,29 @@ export default {
   // 计算属性
   computed: {
     ...mapState("tab", ["isCollapse", "tabList"]),
+    // tag 是否高亮
+    isEffect(tag) {
+      return this.$route.name === tag.name ? "dark" : "plain";
+    },
   },
   // 侦听器
   watch: {},
   // 组件方法
-  methods: {},
+  methods: {
+    clickTabs(tag) {
+      this.$router.push({ name: tag.name });
+      //   this.$store.commit("tab/changeTabs", this.$route);
+    },
+    closeTabs(tag, index) {
+      const length = this.tabList.length - 1;
+      if (length === index) {
+        this.$store.commit("tab/removeTab", tag);
+      } else {
+        this.$router.push({ name: this.tabList[index + 1].name });
+        this.$store.commit("tab/removeTab", tag);
+      }
+    },
+  },
   // 以下是生命周期钩子   注：没用到的钩子请自行删除
   /**
    * 在实例初始化之后，组件属性计算之前，如data属性等

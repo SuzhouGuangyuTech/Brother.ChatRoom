@@ -10,11 +10,10 @@
           <CommonHeader />
         </el-header>
         <el-main>
-          <div>
-            <CommonTag />
-            <h1 style="color:black">==============</h1>
+          <CommonTag />
+          <div class="main-border">
+            <router-view></router-view>
           </div>
-          <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -32,7 +31,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 /* 清除默认样式，防止 el-menu 有边距 html, */
 html,
 body {
@@ -42,5 +41,11 @@ body {
   padding: 0;
   overflow: hidden;
   color: #fff;
+
+  .main-border {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
 }
 </style>

@@ -11,6 +11,9 @@ import router from './router';
 import store from './store'
 import './api/mock'
 
+// 全局配置element-ui 弹窗移除遮罩层不关闭
+ElementUI.Dialog.props.closeOnClickModal.default = false;
+
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 

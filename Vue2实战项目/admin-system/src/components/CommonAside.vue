@@ -14,7 +14,7 @@
     <!-- mode="horizontal" 靠右对齐 -->
     <!-- router="true" 启用路由跳转 -->
     <!-- collapse="true" 启用路由跳转 -->
-    <el-menu default-active="home" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" mode="horizontal" router="true" :collapse="isCollapse">
+    <el-menu default-active="home" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" mode="horizontal" :router="true" :collapse="isCollapse">
       <h3>{{isCollapse?'后台':'通用后台管理'}}</h3>
       <el-menu-item v-for="item in noChildPage" :key="item.name" :index="item.name" @click="clickMenu(item)">
         <!-- 模板字符串`el-icon-${item.icon}`  用于拼接字符串 -->

@@ -21,14 +21,23 @@ export default {
         },
         // 更新面包屑
         updateTab(state, item) {
-            console.log('进来了');
             // 判断更新的数据是否是首页
             if (item.name !== 'home') {
                 // 判断数组中是否存在该数据
                 let result = state.tabList.findIndex(value => value.name === item.name);
                 if (result === -1) {
                     state.tabList.push(item);
-                    console.log(state.tabList);
+                }
+            }
+        },
+        // 删除面包屑
+        removeTab(state, item) {
+            // 判断删除的数据是否是首页
+            if (item.name !== 'home') {
+                // 判断数组中是否存在该数据
+                let result = state.tabList.findIndex(value => value.name === item.name);
+                if (result !== -1) {
+                    state.tabList.splice(result, 1);
                 }
             }
         }
