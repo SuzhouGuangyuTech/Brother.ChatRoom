@@ -9,6 +9,8 @@ const http = axios.create({
 // Add a request interceptor(请求拦截器)
 http.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
+    // 可以添加一些公共的参数
+    // config.headers.Authorization = "xxxx"
     return config;
 }, function (error) {
     // 对请求错误做些什么
